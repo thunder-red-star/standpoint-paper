@@ -1,0 +1,150 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#     _____ __                  __            _       __  #
+#   / ___// /_____ _____  ____/ /___  ____  (_)___  / /_  #
+#   \__ \/ __/ __ `/ __ \/ __  / __ \/ __ \/ / __ \/ __/  #
+#  ___/ / /_/ /_/ / / / / /_/ / /_/ / /_/ / / / / / /_    #
+# /____/\__/\__,_/_/ /_/\__,_/ .___/\____/_/_/ /_/\__/    #
+#                           /_/                           #
+#            Copyright (c) 2023 ThunderRedStar            #
+#                 All rights reserved.                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Config version. Do not touch this, you will break the plugin.
+version: 1.0.0
+
+# The prefix for all messages sent by the plugin. RGB color codes are supported.
+prefix: '&8[ &cStandpoint &8] &r'
+
+# Perspective Settings.
+perspective: # Perspective API Key.
+  # Get one at https://developers.perspectiveapi.com/s/?language=en_US
+  api-key: 'YOUR_API_KEY_HERE'
+
+  # List of languages that Perspective will consider when analyzing messages.
+  # Can be any combination of ar, zh, cs, nl, en, fr, de, hi, hi-Latn, id, it, ja, ko, pl, pt, ru, es, sv
+  languages:
+    - en
+
+  # List of attributes to consider when analyzing messages.
+  # Read docs at https://developers.perspectiveapi.com/s/about-the-api-attributes-and-languages?language=en_US
+  attributes:
+    TOXICITY:
+      weight: 10
+      punishments:
+        - threshold: 0.5
+          cancel: true
+          message: '&cPlease consider the effect your message may have on others. When you are ready to send your message in a more respectful manner, you may try again.'
+        - threshold: 0.7
+          cancel: true
+          message: '&cYour message was too toxic. You have been restricted from chatting for 5 minutes.'
+          commands:
+            - 'tempmute %player% 5m'
+        - threshold: 0.9
+          cancel: true
+          message: '&cYour message was too toxic. You have been restricted from chatting for 30 minutes.'
+          commands:
+            - 'tempmute %player% 30m'
+    SEVERE_TOXICITY:
+      weight: 15
+      punishments:
+        - threshold: 0.5
+          cancel: true
+          message: '&cPlease consider the effect your message may have on others. When you are ready to send your message in a more respectful manner, you may try again.'
+        - threshold: 0.7
+          cancel: true
+          message: '&cYour message was too severely toxic. You have been restricted from chatting for 5 minutes.'
+          commands:
+            - 'tempmute %player% 5m'
+        - threshold: 0.9
+          cancel: true
+          message: '&cYour message was too severely toxic. You have been restricted from chatting for 30 minutes.'
+          commands:
+            - 'tempmute %player% 30m'
+    IDENTITY_ATTACK:
+      weight: 20
+      punishments:
+        - threshold: 0.5
+          cancel: true
+          message: '&cPlease consider the effect your message may have on others. When you are ready to send your message in a more respectful manner, you may try again.'
+        - threshold: 0.7
+          cancel: true
+          message: '&cYour message was too much of an identity attack. You have been restricted from chatting for 5 minutes.'
+          commands:
+            - 'tempmute %player% 5m'
+        - threshold: 0.9
+          cancel: true
+          message: '&cYour message was too much of an identity attack. You have been restricted from chatting for 30 minutes.'
+          commands:
+            - 'tempmute %player% 30m'
+    PROFANITY:
+      weight: 5
+      punishments:
+        - threshold: 0.5
+          cancel: true
+          message: '&cPlease consider the effect your message may have on others. When you are ready to send your message in a more respectful manner, you may try again.'
+        - threshold: 0.7
+          cancel: true
+          message: '&cYour message was too profane. You have been restricted from chatting for 5 minutes.'
+          commands:
+            - 'tempmute %player% 5m'
+        - threshold: 0.9
+          cancel: true
+          message: '&cYour message was too profane. You have been restricted from chatting for 30 minutes.'
+          commands:
+            - 'tempmute %player% 30m'
+    INSULT:
+      weight: 12
+      punishments:
+        - threshold: 0.5
+          cancel: true
+          message: '&cPlease consider the effect your message may have on others. When you are ready to send your message in a more respectful manner, you may try again.'
+        - threshold: 0.7
+          cancel: true
+          message: '&cYour message was too insulting. You have been restricted from chatting for 5 minutes.'
+          commands:
+            - 'tempmute %player% 5m'
+        - threshold: 0.9
+          cancel: true
+          message: '&cYour message was too insulting. You have been restricted from chatting for 30 minutes.'
+          commands:
+            - 'tempmute %player% 30m'
+    SEXUALLY_EXPLICIT:
+        weight: 8
+      punishments:
+        - threshold: 0.5
+          cancel: true
+          message: '&cPlease consider the effect your message may have on others. When you are ready to send your message in a more respectful manner, you may try again.'
+        - threshold: 0.7
+          cancel: true
+          message: '&cYour message was too sexually explicit. You have been restricted from chatting for 5 minutes.'
+          commands:
+            - 'tempmute %player% 5m'
+        - threshold: 0.9
+          cancel: true
+          message: '&cYour message was too sexually explicit. You have been restricted from chatting for 30 minutes.'
+          commands:
+            - 'tempmute %player% 30m'
+    THREAT:
+      weight: 17
+      punishments:
+        - threshold: 0.5
+          cancel: true
+          message: '&cPlease consider the effect your message may have on others. When you are ready to send your message in a more respectful manner, you may try again.'
+        - threshold: 0.7
+          cancel: true
+          message: '&cYour message was too threatening. You have been restricted from chatting for 5 minutes.'
+          commands:
+            - 'tempmute %player% 5m'
+        - threshold: 0.9
+          cancel: true
+          message: '&cYour message was too threatening. You have been restricted from chatting for 30 minutes.'
+          commands:
+            - 'tempmute %player% 30m'
+
+  do-not-store: true # Whether or not to allow Perspective to store messages for training purposes.
+
+# Permission for players to bypass Perspective checks.
+bypass-permission: 'standpoint.bypass'
+
+# Whether or not to log Perspective checks to the console.
+log-to-console: true

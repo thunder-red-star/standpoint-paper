@@ -1,0 +1,9 @@
+name: Standpoint
+version: '${project.version}'
+main: me.thdr.standpoint.Standpoint
+api-version: 1.19
+prefix: Standpoint
+load: STARTUP
+authors: [ ThunderRedStar ]
+description: Minecraft chat moderation plugin that uses AI to keep your server safe.
+website: standpoint.thdr.me
