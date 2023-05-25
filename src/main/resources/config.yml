@@ -109,7 +109,7 @@ perspective: # Perspective API Key.
           commands:
             - 'tempmute %player% 30m'
     SEXUALLY_EXPLICIT:
-        weight: 8
+      weight: 8
       punishments:
         - threshold: 0.5
           cancel: true

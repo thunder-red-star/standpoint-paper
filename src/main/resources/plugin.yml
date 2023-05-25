@@ -7,3 +7,9 @@ load: STARTUP
 authors: [ ThunderRedStar ]
 description: Minecraft chat moderation plugin that uses AI to keep your server safe.
 website: standpoint.thdr.me
+commands:
+    standpoint:
+        description: Standpoint base command, contains subcommands
+        usage: /<command> [subcommand] [args]
+        permission: standpoint.command
+        aliases: [ sp ]

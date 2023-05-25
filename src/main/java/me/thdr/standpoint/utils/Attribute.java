@@ -23,9 +23,14 @@ public class Attribute {
 
     public Punishment getPunishment(double score) {
         Punishment punishment = null;
+        double highestThreshold = 0;
         for (Punishment p : punishments) {
-            if (p.getThreshold() <= score) {
-                punishment = p;
+            // Println the score and threshold
+            if (score >= p.getThreshold()) {
+                if (p.getThreshold() > highestThreshold) {
+                    punishment = p;
+                    highestThreshold = p.getThreshold();
+                }
             }
         }
         return punishment;

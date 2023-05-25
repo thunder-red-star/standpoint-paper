@@ -1,5 +1,6 @@
 package me.thdr.standpoint;
 
+import me.thdr.standpoint.commands.StandpointCommand;
 import me.thdr.standpoint.utils.Automod;
 import org.bukkit.plugin.java.JavaPlugin;
 import me.thdr.standpoint.listeners.ChatListener;
@@ -56,7 +57,7 @@ public final class Standpoint extends JavaPlugin {
         );
 
         // Create an automod instance by reading through the config.
-        this.automod = Automod.fromConfig(Objects.requireNonNull(getConfig().getConfigurationSection("perspective.attributes")));
+        this.automod = Automod.fromConfig(this, Objects.requireNonNull(getConfig().getConfigurationSection("perspective.attributes")));
 
         // Log config load. Print the config load message.
         // Structure of config load message: "Loaded config.yml"
@@ -64,6 +65,9 @@ public final class Standpoint extends JavaPlugin {
 
         // Attach hook to chat listener
         getServer().getPluginManager().registerEvents(new ChatListener(this, this.requester, this.automod), this);
+
+        // Register Standpoint command
+        getCommand("standpoint").setExecutor(new StandpointCommand(this));
     }
 
     @Override
