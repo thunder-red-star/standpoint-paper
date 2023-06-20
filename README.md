@@ -1,8 +1,6 @@
 # Standpoint
 A Perspective-API based chat filter for PaperMC and compatible servers. **Do not ask for Spigot support.**
 
-Test server: allayrival.minecraftnoob.com:25594
-
 ## Features
 - [x] Perspective API integration
 - [x] Configurable thresholds **for each flag**
