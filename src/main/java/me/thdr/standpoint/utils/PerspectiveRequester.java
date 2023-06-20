@@ -6,6 +6,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -107,6 +111,7 @@ public class PerspectiveRequester {
     private final ArrayList<String> attributes;
     private final ArrayList<String> languages;
     private final boolean doNotStore;
+    private Connection connection;
 
     // Requester class. This class will be used to send requests to the Perspective API.
     public PerspectiveRequester(String apiKey, ArrayList<String> attributes, ArrayList<String> languages, boolean doNotStore) {
@@ -117,20 +122,70 @@ public class PerspectiveRequester {
     }
 
     // Send a request to the Perspective API.
-    public JsonObject sendRequest(String message) throws IOException {
+    public JsonObject sendRequest(String message) throws IOException, SQLException {
+        // Check if the message can be found in the database.
+        if (this.connection != null) {
+            // Create a new PreparedStatement object, with message as parameter.
+            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM `messages` WHERE `message` = ?");
+
+            // Set the parameter.
+            statement.setString(1, message);
+
+            // Execute the statement.
+            statement.execute();
+
+            // Get the result.
+            ResultSet result = statement.getResultSet();
+            if (result.next()) {
+                // Get the result.
+                String resultString = result.getString("results");
+
+                // Return the result, parsed with Gson.
+                return new Gson().fromJson(resultString, JsonObject.class);
+            }
+        }
+
         // Create a new PerspectiveAPIRequest object.
         PerspectiveAPIRequest request = new PerspectiveAPIRequest(message, this.apiKey, this.attributes, this.languages, this.doNotStore);
 
         // Try to send the request.
         try {
             // Return the response.
-            return request.sendRequest();
+            JsonObject res = request.sendRequest();
+
+            // Stringify the response, for insertion into the database.
+            String resString = res.toString();
+
+            // If the connection is not null, insert the response into the database.
+            if (this.connection != null) {
+                // Create a new PreparedStatement object, with message and result as parameters.
+                PreparedStatement statement = this.connection.prepareStatement("INSERT INTO `messages` (`message`, `results`) VALUES (?, ?)");
+
+                // Set the parameters.
+                statement.setString(1, message);
+                statement.setString(2, resString);
+
+                // Execute the statement.
+                statement.execute();
+            }
+
+            return res;
         } catch (IOException e) {
             // Print the stack trace.
             e.printStackTrace();
 
             // Return null.
             return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            // Return null.
+            return null;
         }
+    }
+
+    // Set connection
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }
